@@ -21,7 +21,7 @@ read filename
 
 echo "Speed Test Running. Please Wait..."
 
-# speedtest-cli > /tmp/spdtsttemp
+speedtest-cli > /tmp/spdtsttemp
 # Writes the speedtest-cli command to a temporary file from which we'll pull the results
 # Is it necessary to use this method? Come up with another solution and see which is faster/less resource intensive
 
@@ -44,4 +44,4 @@ echo "------------------------------------" >> $filename
 
 tail -n 24 $filename
  
-# /tmp/spdtsttemp
+rm /tmp/spdtsttemp
