@@ -17,20 +17,18 @@ echo "(Provide full path)"
 
 read filename
 
-# Want to create an if statement that checks for speedtest-cli. If it's not there, prompt user to install it.
+# Later: create an if statement that checks for speedtest-cli. If it's not there, prompt user to install it.
 
 echo "Speed Test Running. Please Wait..."
 
-speedtest-cli > /tmp/spdtsttemp
+# speedtest-cli > /tmp/spdtsttemp
 # Writes the speedtest-cli command to a temporary file from which we'll pull the results
 # Is it necessary to use this method? Come up with another solution and see which is faster/less resource intensive
 
 echo "Log Date:" $(date -Iseconds) >> $filename
 # Want to use 24hr time. Need to study this function further.
 
-# Not working yet
-echo "ISP:" $(grep "Testing from" /tmp/spdtsttemp | cut -c14-) >> $filename
-# Not working yet
+echo "ISP:" $(grep "Testing from" /tmp/spdtsttemp | cut -c14- | awk -F'[()]' '{print $1}') >> $filename
 
 echo "IP:" $(grep "Testing from" /tmp/spdtsttemp | awk -F'[()]' '{print $2}') >> $filename
 # Returns only the text on the line which is surrounded by parentheses. Need to study awk command further.
@@ -45,5 +43,5 @@ grep "Upload:" /tmp/spdtsttemp >> $filename
 echo "------------------------------------" >> $filename
 
 tail -n 24 $filename
-
-rm /tmp/spdtsttemp
+ 
+# /tmp/spdtsttemp
