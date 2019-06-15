@@ -2,10 +2,7 @@
 
 # A script used to run speedtest-cli and log the results along with date and time
 # Ask user what to name the file.
-# Todo: Create another version later that can be run as a cron job.
-# Todo: If file exists, ask if user wants to append or replace. Request confirmation.
-# Use ISO 8601 date format
-# Todo: Display the speedtest-cli output while it's running
+# Todo: Create another version later that can be run as a cron job on my Raspberry Pi.
 # Log only the relevant info: IP, test server, ping, down speed, up speed.
 # Todo: Complete the process by returning in terminal the last four entries on the log using tail.
 
@@ -18,12 +15,15 @@ echo "(Provide full path)"
 read filename
 
 # Later: create an if statement that checks for speedtest-cli. If it's not there, prompt user to install it.
-
+ 
 echo "Speed Test Running. Please Wait..."
+echo "-------------------------------------"
 
-speedtest-cli > /tmp/spdtsttemp
-# Writes the speedtest-cli command to a temporary file from which we'll pull the results
-# Is it necessary to use this method? Come up with another solution and see which is faster/less resource intensive
+speedtest-cli >&1 | tee /tmp/spdtsttemp
+# Is it necessary to use the temp file method? Come up with another solution and see which is faster/less resource intensive
+# Need to study the tee command and understand the >&1 part 
+
+echo "-------------------------------------"
 
 echo "Log Date:" $(date -Iseconds) >> $filename
 # Want to use 24hr time. Need to study this function further.
@@ -40,9 +40,9 @@ grep "Download:" /tmp/spdtsttemp >> $filename
 
 grep "Upload:" /tmp/spdtsttemp >> $filename 
 
-echo "------------------------------------" >> $filename
+echo "-------------------------------------" >> $filename
 
-tail -n 24 $filename
+tail -n 28 $filename
  
 rm /tmp/spdtsttemp
 
